@@ -1,0 +1,109 @@
+import java.util.*;
+class multi_poly
+{
+static class Node {
+    int coeff, power;
+    Node next;
+} 
+static Node addnode(Node start, int coeff, int power)
+{
+    Node newnode = new Node();
+    newnode.coeff = coeff;
+    newnode.power = power;
+    newnode.next = null;
+ 
+    if (start == null)
+        return newnode;
+ 
+    Node ptr = start;
+    while (ptr.next != null)
+        ptr = ptr.next;
+    ptr.next = newnode;
+ 
+    return start;
+}
+ 
+static void printList( Node ptr)
+{
+    while (ptr.next != null) {
+        System.out.print( ptr.coeff + "x^" + ptr.power + " + ");
+ 
+        ptr = ptr.next;
+    }
+    System.out.print( ptr.coeff  +"\n");
+}
+ 
+static void removeDuplicates(Node start)
+{
+    Node ptr1, ptr2, dup;
+    ptr1 = start;
+ 
+    while (ptr1 != null && ptr1.next != null) {
+        ptr2 = ptr1;
+ 
+        while (ptr2.next != null) {
+ 
+            if (ptr1.power == ptr2.next.power) {
+ 
+                ptr1.coeff = ptr1.coeff + ptr2.next.coeff;
+                dup = ptr2.next;
+                ptr2.next = ptr2.next.next;
+ 
+            }
+            else
+                ptr2 = ptr2.next;
+        }
+        ptr1 = ptr1.next;
+    }
+}
+ 
+static Node multiply(Node poly1, Node poly2,
+            Node poly3)
+{
+ 
+    Node ptr1, ptr2;
+    ptr1 = poly1;
+    ptr2 = poly2;
+    while (ptr1 != null) {
+        while (ptr2 != null) {
+            int coeff, power;
+ 
+            coeff = ptr1.coeff * ptr2.coeff;
+ 
+            power = ptr1.power + ptr2.power;
+ 
+            poly3 = addnode(poly3, coeff, power);
+ 
+ 
+            ptr2 = ptr2.next;
+        }
+ 
+        ptr2 = poly2;
+  
+        ptr1 = ptr1.next;
+    }
+  
+    removeDuplicates(poly3);
+    return poly3;
+}
+ 
+ 
+public static void main(String args[])
+{
+ 
+    Node poly1 = null, poly2 = null, poly3 = null;
+ 
+    poly1 = addnode(poly1, 3, 2);
+    poly1 = addnode(poly1, 5, 1);
+    poly1 = addnode(poly1, 6, 0);
+ 
+    poly2 = addnode(poly2, 6, 1);
+    poly2 = addnode(poly2, 8, 0);
+    
+    poly3 = multiply(poly1, poly2, poly3);
+ 
+    System.out.print( "Resultant Polynomial: ");
+    printList(poly3);
+}
+}
+ 
